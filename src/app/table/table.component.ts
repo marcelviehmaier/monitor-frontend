@@ -8,6 +8,7 @@ export interface PeriodicElement {
   transportationType: string;
   transportationNumber: string;
   time: string;
+  actualTime: string;
   destination: string;
 }
 
@@ -21,7 +22,7 @@ var ELEMENT_DATA: PeriodicElement[] = [];
 export class TableComponent implements OnInit {
   displayedColumns: string[] = ['transportationType', 'transportationNumber', 'time', 'destination'];
   dataSource = ELEMENT_DATA;
-  dateTime: Date;
+  dateTime: Date = new Date();
 
   constructor(private http: HttpClient) {
   }
@@ -29,9 +30,9 @@ export class TableComponent implements OnInit {
   ngOnInit(): void {
     this.loadConnections();
     const autoSaveInterval: number = setInterval(() => {
+      this.dateTime = new Date();
       this.loadConnections();
-    }, 60000);
-    this.dateTime = new Date();
+    }, 10000);
   }
 
   loadConnections(): void {

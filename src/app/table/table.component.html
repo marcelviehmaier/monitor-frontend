@@ -1,8 +1,8 @@
-<mat-toolbar color="warn">
+<mat-toolbar style="background-color: #ffb80f; color: #f8f8f8">
   <mat-toolbar-row>
     <span>Pforzheim Wildpark</span>
     <span class="example-spacer"></span>
-    <span>{{dateTime.getHours()}}:{{dateTime.getMinutes()}} Uhr</span>
+    <span>{{dateTime.toLocaleDateString('de-DE')}} | {{dateTime.getHours()}}:{{dateTime.getMinutes()}} Uhr</span>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -19,14 +19,19 @@
 
   <!-- Name Column -->
   <ng-container matColumnDef="transportationNumber">
-    <th mat-header-cell *matHeaderCellDef> Nummer </th>
+    <th mat-header-cell *matHeaderCellDef> Linie </th>
     <td mat-cell *matCellDef="let element"> {{element.transportationNumber}} </td>
   </ng-container>
 
   <!-- Weight Column -->
   <ng-container matColumnDef="time">
     <th mat-header-cell *matHeaderCellDef> Abfahrt </th>
-    <td mat-cell *matCellDef="let element"> {{element.time}} </td>
+    <td mat-cell *matCellDef="let element"><div *ngIf="element.actualTime !== ''; else loggedOut">
+      {{element.actualTime}}
+    </div>
+      <ng-template #loggedOut>
+        {{element.time}}
+      </ng-template></td>
   </ng-container>
 
   <!-- Symbol Column -->
