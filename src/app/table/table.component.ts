@@ -30,7 +30,7 @@ export class TableComponent implements OnInit {
 
   constructor(private http: HttpClient, private api: ApiService) {
     this.platform = new H.service.Platform({
-      'apikey': '29BRBEx5Au0n8YtQL8UxnBiyOm8sEBcaRdC4PIFaWm4'
+      'apikey': 'VR7zRra1LgRwFyk4Mk9-U1Xd3klyn6P4FAlOWvDGK4E'
     });
     this.service = this.platform.getSearchService();
   }
@@ -58,7 +58,7 @@ export class TableComponent implements OnInit {
       'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3ei1XVHgwMGZ4ZV9kY1BKUGNBSnQ4akx1LV9uVDFNTEVieElwTS1od3JRIn0.eyJqdGkiOiJhNzJkM2Q5YS1kM2ZiLTRkNWQtODQ4MC03ZGVhY2MyNmQxZGIiLCJleHAiOjE1OTczNjg5MjksIm5iZiI6MCwiaWF0IjoxNTk3MzMyOTc0LCJpc3MiOiJodHRwczovL21vYmlsaXR5LWRldi5ocy1wZm9yemhlaW0uZGU6ODQ0My9hdXRoL3JlYWxtcy9MREFQIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjhkNWZjY2M3LWQ2OWEtNGU4Yi04NWU1LWRjOGVhNzk5MTk1ZSIsInR5cCI6IkJlYXJlciIsImF6cCI6Im15UmVhY3QiLCJub25jZSI6IjNjNmI2NjE1LTg4M2YtNDAxOS04MjQ4LWE3ZDgwY2U2ZTg1MSIsImF1dGhfdGltZSI6MTU5NzMzMjkyOSwic2Vzc2lvbl9zdGF0ZSI6IjhjZDMwN2FhLWQ3MzYtNGYzZi1iM2RlLThjZTg2NzE2ZTQyZiIsImFjciI6IjAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovLzE0MS40Ny4yLjM3OjMwMDAiLCJodHRwczovL21vYmlsaXR5LWRldi5ocy1wZm9yemhlaW0uZGUiLCJodHRwOi8vbG9jYWxob3N0OjMwMDAiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoiTWFyY2VsIFZpZWhtYWllciIsInByZWZlcnJlZF91c2VybmFtZSI6InZpZWhtYWllIiwiZ2l2ZW5fbmFtZSI6Ik1hcmNlbCIsImZhbWlseV9uYW1lIjoiVmllaG1haWVyIiwiZW1haWwiOiJ2aWVobWFpZUBocy1wZm9yemhlaW0uZGUifQ.oFOq6ceRH1SUAWRH6DjyYre4mk4QQhlXvOjmxe_DR_v6IduTLOnGU2jrSVUBhYzoLBR4ztUsZxEcKxNnLAAH1_jQRbtgwUYohMjuOPaHTvd_MXWEDCvtcmQzu3fZo2h5amjjARG_6IT--id3Vqnhs0GkU-4z5fMjjyIs_BhjoIpGKgabScPe6jDM8BsURqI7o_bvnf9zI5lNDHgtnHuW0XuGsX4FrvuA6BIEcqz5NEP1aGJU4uG--3q6_9CmeKaVPuPcX_fix06hD1FhwcCHpyNfwkXQfuwwqzeb5QT-H2_QpL5cRFc1RzlDYWKOutiWznG_BA_Gc2q5AEcY6_XetA'
     });
     this.http.get('https://mobility-dev.hs-pforzheim.de/api/rides/getall', {headers: headers}).subscribe(res => {
-      res['result'].rides.forEach(ride => {
+      res['result'].rides.forEach(async ride => {
         const date = new Date(ride.departureTimestamp);
         if(date.toDateString() == this.systemDateTime.toDateString() && this.systemDateTime < date){
           ELEMENT_DATA.push({
