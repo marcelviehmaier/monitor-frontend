@@ -1,8 +1,8 @@
 <mat-toolbar style="background-color: #ffb80f; color: #f8f8f8">
   <mat-toolbar-row>
-    <span>Pforzheim Wildpark</span>
+    <span>Campus - Hochschule Pforzheim</span>
     <span class="example-spacer"></span>
-    <span>{{dateTime.toLocaleDateString('de-DE')}} | {{dateTime.getHours()}}:{{dateTime.getMinutes()}} Uhr</span>
+    <span>{{systemDateTime.toLocaleDateString('de-DE')}} | {{("0" + systemDateTime.getHours()).slice(-2)}}:{{("0" + systemDateTime.getMinutes()).slice(-2)}} Uhr</span>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -11,32 +11,43 @@
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
 
-  <!-- Position Column -->
+  <!-- Transportation Image Column -->
   <ng-container matColumnDef="transportationType">
-    <th mat-header-cell *matHeaderCellDef>  </th>
-    <td mat-cell *matCellDef="let element"> <span class="material-icons">directions_bus</span></td>
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element">
+      <span class="material-icons" *ngIf="element.transportationType === 'Bus'">directions_bus</span>
+      <span class="material-icons" *ngIf="element.transportationType === 'Car'">directions_car</span>
+    </td>
   </ng-container>
 
-  <!-- Name Column -->
+  <!-- Transportation Number Column -->
   <ng-container matColumnDef="transportationNumber">
-    <th mat-header-cell *matHeaderCellDef> Linie </th>
+    <th mat-header-cell *matHeaderCellDef> Linie</th>
     <td mat-cell *matCellDef="let element"> {{element.transportationNumber}} </td>
   </ng-container>
 
-  <!-- Weight Column -->
+  <!-- Departure Time Column -->
   <ng-container matColumnDef="time">
-    <th mat-header-cell *matHeaderCellDef> Abfahrt </th>
-    <td mat-cell *matCellDef="let element"><div *ngIf="element.actualTime !== ''; else loggedOut">
-      {{element.actualTime}}
-    </div>
+    <th mat-header-cell *matHeaderCellDef> Uhrzeit</th>
+    <td mat-cell *matCellDef="let element">
+      <div *ngIf="element.actualTime !== ''; else loggedOut">
+        {{element.actualTime}}
+      </div>
       <ng-template #loggedOut>
         {{element.time}}
-      </ng-template></td>
+      </ng-template>
+    </td>
   </ng-container>
 
-  <!-- Symbol Column -->
+  <!-- Departure Place Column -->
+  <ng-container matColumnDef="departure">
+    <th mat-header-cell *matHeaderCellDef> Abfahrt</th>
+    <td mat-cell *matCellDef="let element"> {{element.departure}} </td>
+  </ng-container>
+
+  <!-- Departure Place Column -->
   <ng-container matColumnDef="destination">
-    <th mat-header-cell *matHeaderCellDef> Ziel </th>
+    <th mat-header-cell *matHeaderCellDef> Ziel</th>
     <td mat-cell *matCellDef="let element"> {{element.destination}} </td>
   </ng-container>
 
