@@ -33,13 +33,8 @@ export class TableComponent {
   constructor(private http: HttpClient, private api: ApiService, private timeService: TimeService) {
     const interval: number = setInterval(() => {
       this.systemDateTime = new Date();
-
-      // Render private connections from mobility4people app
-      this.api.getAccessToken().subscribe(res => {
-        this.token = res['access_token'];
-        this.ELEMENT_DATA = [];
-        this.renderPrivateRides();
-      });
+      this.ELEMENT_DATA = [];
+      this.renderPublicConnections();
     }, 10000);
   }
 
