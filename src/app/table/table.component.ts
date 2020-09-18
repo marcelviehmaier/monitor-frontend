@@ -13,7 +13,6 @@ export interface PeriodicElement {
   departure: string;
 }
 
-var ELEMENT_DATA: PeriodicElement[] = [];
 
 @Component({
   selector: 'app-table',
@@ -21,13 +20,15 @@ var ELEMENT_DATA: PeriodicElement[] = [];
   styleUrls: ['./table.component.css']
 })
 export class TableComponent {
+  ELEMENT_DATA: PeriodicElement[] = [];
   displayedColumns: string[] = ['transportationType', 'transportationNumber', 'time', 'departure', 'destination'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   systemDateTime: Date = new Date();
   departurePlace = 'Pforzheim Wildpark';
   public platform: any;
   public service: any;
   private token: string;
+
 
   constructor(private http: HttpClient, private api: ApiService, private timeService: TimeService) {
     const interval: number = setInterval(() => {
@@ -36,7 +37,7 @@ export class TableComponent {
       // Render private connections from mobility4people app
       this.api.getAccessToken().subscribe(res => {
         this.token = res['access_token'];
-        ELEMENT_DATA = [];
+        this.ELEMENT_DATA = [];
         this.renderPrivateRides();
       });
     }, 10000);
@@ -44,17 +45,18 @@ export class TableComponent {
 
   renderPublicConnections(): void {
     this.api.loadPublicConnections(this.departurePlace).subscribe(res => {
-      res.forEach(r => ELEMENT_DATA.push(r));
-      ELEMENT_DATA.forEach(data => data.departure = this.departurePlace);
-      ELEMENT_DATA.sort(function (a, b) {
+      res.forEach(r => this.ELEMENT_DATA.push(r));
+      this.ELEMENT_DATA.forEach(data => data.departure = this.departurePlace);
+      this.ELEMENT_DATA.sort(function(a, b) {
         return a.time.localeCompare(b.time);
       });
-      try{
-        ELEMENT_DATA = this.timeService.getTimeDifferenceInMinutes(ELEMENT_DATA[0].time, ELEMENT_DATA[0].actualTime, ELEMENT_DATA);
-      }catch(e){
+      try {
+        this.ELEMENT_DATA =
+          this.timeService.getTimeDifferenceInMinutes(this.ELEMENT_DATA[0].time, this.ELEMENT_DATA[0].actualTime, this.ELEMENT_DATA);
+      } catch (e) {
         console.error(e);
       }
-      this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+      this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
     });
   }
 
@@ -62,8 +64,8 @@ export class TableComponent {
     this.api.loadPrivateRides(this.token).subscribe(res => {
       res['result'].rides.forEach(async ride => {
         const date = new Date(ride.departureTimestamp);
-        if(date.toDateString() == this.systemDateTime.toDateString() && this.systemDateTime < date){
-          ELEMENT_DATA.push({
+        if (date.toDateString() == this.systemDateTime.toDateString() && this.systemDateTime < date) {
+          this.ELEMENT_DATA.push({
             transportationType: 'Car',
             transportationNumber: ride.userId.firstName + ' ' + ride.userId.lastName,
             time: ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2),
